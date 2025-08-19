@@ -90,38 +90,18 @@ vim.cmd([[
   autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion'}} })
 ]])
 
--- vim.cmd([[
--- augroup kitty_mp
---     autocmd!
---     au VimLeave * :silent !kitty @ set-spacing padding=25
---     au VimEnter * :silent !kitty @ set-spacing padding=0
--- augroup END
--- ]])
---
---
--- vim.cmd([[
--- augroup go_tmpl
---     autocmd!
---     autocmd BufRead,BufNewFile *.templ set filetype=gotmpl
--- augroup END
--- ]])
-
--- vim.api.nvim_create_autocmd({ "BufWritePre" }, { pattern = { "*.templ" }, callback = vim.lsp.buf.format })
-
+-- Auto format Go files on save
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  pattern = { "*.templ" },
+  pattern = { "*.go" },
   callback = function()
     vim.lsp.buf.format({ async = true })
   end,
 })
 
--- Add these autocmd events for toggling neovim kitty padding
-vim.api.nvim_create_autocmd("VimEnter", {
-  pattern = "*",
-  command = "silent !kitty @ set-spacing padding=20",
-})
-
-vim.api.nvim_create_autocmd("VimLeave", {
-  pattern = "*",
-  command = "silent !kitty @ set-spacing padding=0",
+-- Auto format JS/TS/Vue files on save (if prettier is available)
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  pattern = { "*.js", "*.jsx", "*.ts", "*.tsx", "*.vue", "*.json", "*.css", "*.html" },
+  callback = function()
+    vim.lsp.buf.format({ async = true })
+  end,
 })

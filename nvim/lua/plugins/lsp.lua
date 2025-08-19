@@ -144,27 +144,6 @@ return {
 			},
 		})
 
-		lspconfig.htmx.setup({
-			on_attach = on_attach,
-			capabilities = capabilities,
-			filetypes = { "html", "templ" },
-		})
-
-		lspconfig["templ"].setup({
-			capabilities = capabilities2,
-			on_attach = on_attach,
-		})
-
-		lspconfig["ccls"].setup({
-			capabilities = capabilities2,
-			on_attach = on_attach,
-		})
-
-		lspconfig["cmake"].setup({
-			capabilities = capabilities2,
-			on_attach = on_attach,
-		})
-
 		-- FIXED: Vue/Volar Configuration - This is the main fix for your Vue autocomplete issue
 		lspconfig["volar"].setup({
 			capabilities = capabilities,
@@ -277,34 +256,10 @@ return {
 			},
 		})
 
-		-- configure svelte server
-		lspconfig["svelte"].setup({
-			capabilities = capabilities,
-			on_attach = function(client, bufnr)
-				on_attach(client, bufnr)
-
-				vim.api.nvim_create_autocmd("BufWritePost", {
-					pattern = { "*.js", "*.ts" },
-					callback = function(ctx)
-						if client.name == "svelte" then
-							client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.file })
-						end
-					end,
-				})
-			end,
-		})
-
 		-- configure prisma orm server
 		lspconfig["prismals"].setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
-		})
-
-		-- configure graphql language server
-		lspconfig["graphql"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
 		})
 
 		-- configure emmet language server
@@ -352,46 +307,6 @@ return {
 			filetypes = { "go", "gomod", "gotmpl" },
 		})
 
-		-- configure jdtls language server
-		lspconfig["jdtls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			filetypes = { "java" },
-			autostart = false,
-		})
-
-		-- configure sqlls language server
-		lspconfig["sqlls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			root_dir = function()
-				return vim.loop.cwd()
-			end,
-		})
-
-		-- configure python server
-		lspconfig["pyright"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				python = {
-					analysis = {
-						typeCheckingMode = "off",
-					},
-				},
-			},
-		})
-
-		-- configure C/C++ server
-		lspconfig["clangd"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			cmd = {
-				"clangd",
-				"--offset-encoding=utf-16",
-			},
-		})
-
 		-- configure php server
 		lspconfig["intelephense"].setup({
 			capabilities = capabilities,
@@ -399,34 +314,6 @@ return {
 			root_dir = function(fname)
 				return vim.fn.getcwd()
 			end,
-		})
-
-		-- configure lua server (with special settings)
-		lspconfig["lua_ls"].setup({
-			capabilities = capabilities,
-			on_attach = on_attach,
-			settings = {
-				Lua = {
-					semantic = {
-						enable = false,
-					},
-					hint = { enable = true },
-					telemetry = { enable = false },
-					diagnostics = {
-						globals = { "vim" },
-					},
-					workspace = {
-						library = {
-							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-							[vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-							[vim.fn.stdpath("config") .. "/lua"] = true,
-						},
-						checkThirdParty = false,
-						maxPreload = 100000,
-						preloadFileSize = 10000,
-					},
-				},
-			},
 		})
 	end,
 }

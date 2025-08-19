@@ -4,17 +4,13 @@ return {
     opts.ensure_installed = opts.ensure_installed or {}
     vim.list_extend(opts.ensure_installed, {
       -- LSP Servers
-      "html-lsp",
-      "css-lsp",
-      "lua-language-server",
-      "tailwindcss-language-server",
       "typescript-language-server",
-      "eslint-lsp",
+      "vue-language-server",
       "json-lsp",
+      "css-lsp",
+      "tailwindcss-language-server",
+      "emmet-ls",
       "gopls",
-      "pyright",
-      "clangd",
-      "jdtls",
 
       -- Formatters & Linters
       "prettier",
@@ -23,7 +19,7 @@ return {
       "goimports",
 
       -- Debuggers
-      "delve",
+      "delve", -- Go debugger
     })
   end,
 }
